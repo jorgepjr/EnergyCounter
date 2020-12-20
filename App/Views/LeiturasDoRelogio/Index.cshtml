@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="card-body">
+    <form asp-action="Registrar">
+        <partial name="_FormLeitura.cshtml" />
+    </form>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Kw /h</th>
+                <th>Consumo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Registro.ToString("dd/MM/yyyy")</td>
+                    <td>@item.Kwh</td>
+                    <td>@item.Consumo</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@* <div class="card-body">
+    <form asp-action="Registrar">
+    <partial name="_FormLeitura.cshtml" />
+    </form>
+    @foreach (var item in Model)
+    {
+    <ul class="list-group">
+    <li class="list-group-item list-group-item-action">Data: @item.Registro.ToString("dd/MM/yyyy") | Kw/h: @item.Kwh
+    | Consumo: @item.Consumo</li>
+    </ul>
+    }
+    </div> *@
