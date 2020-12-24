@@ -1,10 +1,10 @@
-using App;
 using Xunit;
-using App.Models;
-using App.Service;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using App.Models;
+using App.Service;
+using App;
 
 namespace Testes
 {

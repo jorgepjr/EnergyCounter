@@ -20,7 +20,7 @@ namespace App.Controllers
         public async Task<IActionResult> Index()
         {
             var leituras = await db.LeiturasDoRelogio
-            .Where(x => x.Registro.Month == DateTime.Now.Month).OrderBy(x => x.Kwh).ToListAsync();
+            .Where(x => x.Registro.Month == DateTime.Now.Month).OrderBy(x => x.Registro).ToListAsync();
             return View(leituras);
         }
 
@@ -28,6 +28,15 @@ namespace App.Controllers
         public IActionResult Registrar(int kwh)
         {
             var ultimoValor = db.LeiturasDoRelogio.OrderBy(x => x.Kwh).LastOrDefault();
+            if (ultimoValor is null)
+            {
+                var leitura = new LeituraDoRelogio(kwh);
+                medidor.RegistrarConsumo(kwh);
+                db.Add(leitura);
+                db.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+
             if (kwh <= 0)
             {
                 TempData["Mensagem"] = "*valor inválido ";
@@ -39,15 +48,11 @@ namespace App.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            if (medidor.UltimoValorEhMenor(kwh))
+            if (medidor.UltimoValorEhMaior(kwh))
             {
                 TempData["Mensagem"] = $"Digite um valor maior que {ultimoValor.Kwh} Kw/h";
                 return RedirectToAction(nameof(Index));
             }
-            var leitura = new LeituraDoRelogio(kwh);
-            medidor.RegistrarConsumo(kwh);
-            db.Add(leitura);
-            db.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
     }

@@ -5,7 +5,6 @@ namespace App.Models
 {
     public class LeituraDoRelogio
     {
-        private readonly Medidor medidor;
         protected LeituraDoRelogio() { }
         public LeituraDoRelogio(int kwh)
         {

@@ -19,14 +19,14 @@ namespace App.Service
 
             if (ultimaLeitura != null)
             {
-                if (ultimaLeitura.Kwh < novaLeitura)
+                if (ultimaLeitura.Kwh < novaLeitura || ultimaLeitura != null)
                 {
                     ultimaLeitura.CalcularConsumo(ultimaLeitura.Kwh, novaLeitura);
                 }
             }
         }
 
-        public bool UltimoValorEhMenor(int kwh)
+        public bool UltimoValorEhMaior(int kwh)
         {
             var leituras = db.LeiturasDoRelogio.ToList();
             if (!leituras.Any())
@@ -45,8 +45,10 @@ namespace App.Service
         }
         public bool LeituraDoDiaRealizada()
         {
-            var ultimaLeitura = db.LeiturasDoRelogio.OrderBy(x=>x.Registro).LastOrDefault();
-            return ultimaLeitura.Registro.Date == DateTime.Now.Date;
+            var ultimaLeitura = db.LeiturasDoRelogio.OrderBy(x => x.Registro).LastOrDefault();
+            if (ultimaLeitura != null)
+                return ultimaLeitura.Registro.Date == DateTime.Now.Date;
+            return false;
         }
     }
 }
