@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace App.Service
@@ -23,6 +24,29 @@ namespace App.Service
                     ultimaLeitura.CalcularConsumo(ultimaLeitura.Kwh, novaLeitura);
                 }
             }
+        }
+
+        public bool UltimoValorEhMenor(int kwh)
+        {
+            var leituras = db.LeiturasDoRelogio.ToList();
+            if (!leituras.Any())
+            {
+                return true;
+            }
+
+            foreach (var item in leituras)
+            {
+                if (item.Kwh > kwh)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool LeituraDoDiaRealizada()
+        {
+            var ultimaLeitura = db.LeiturasDoRelogio.OrderBy(x=>x.Registro).LastOrDefault();
+            return ultimaLeitura.Registro.Date == DateTime.Now.Date;
         }
     }
 }

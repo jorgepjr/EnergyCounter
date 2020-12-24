@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using App.Models;
 using App.Service;
@@ -18,26 +19,30 @@ namespace App.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var leituras = await db.LeiturasDoRelogio.OrderBy(x => x.Kwh).ToListAsync();
+            var leituras = await db.LeiturasDoRelogio
+            .Where(x => x.Registro.Month == DateTime.Now.Month).OrderBy(x => x.Kwh).ToListAsync();
             return View(leituras);
         }
 
         [HttpPost]
         public IActionResult Registrar(int kwh)
         {
-            if (kwh == 0)
+            var ultimoValor = db.LeiturasDoRelogio.OrderBy(x => x.Kwh).LastOrDefault();
+            if (kwh <= 0)
             {
-                return BadRequest();
+                TempData["Mensagem"] = "*valor inválido ";
+                return RedirectToAction(nameof(Index));
             }
-            var leituras = db.LeiturasDoRelogio.ToList();
-
-            foreach (var item in leituras)
+            if (medidor.LeituraDoDiaRealizada())
             {
-                if (item.Kwh > kwh)
-                {
-                    ViewBag.Message = "Nao e possivel";
-                    return RedirectToAction(nameof(Index));
-                }
+                TempData["Mensagem"] = $"O registro de hoje já foi realizado!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (medidor.UltimoValorEhMenor(kwh))
+            {
+                TempData["Mensagem"] = $"Digite um valor maior que {ultimoValor.Kwh} Kw/h";
+                return RedirectToAction(nameof(Index));
             }
             var leitura = new LeituraDoRelogio(kwh);
             medidor.RegistrarConsumo(kwh);
