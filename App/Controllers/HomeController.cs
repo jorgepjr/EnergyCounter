@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using App.Models;
+﻿using App.Models;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnergyCounter.Controllers
