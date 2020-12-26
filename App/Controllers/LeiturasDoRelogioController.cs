@@ -27,16 +27,6 @@ namespace App.Controllers
         [HttpPost]
         public IActionResult Registrar(int kwh)
         {
-            var ultimoValor = db.LeiturasDoRelogio.OrderBy(x => x.Kwh).LastOrDefault();
-            if (ultimoValor is null)
-            {
-                var leitura = new LeituraDoRelogio(kwh);
-                medidor.RegistrarConsumo(kwh);
-                db.Add(leitura);
-                db.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-
             if (kwh <= 0)
             {
                 TempData["Mensagem"] = "*valor inválido ";
@@ -50,9 +40,13 @@ namespace App.Controllers
 
             if (medidor.UltimoValorEhMaior(kwh))
             {
-                TempData["Mensagem"] = $"Digite um valor maior que {ultimoValor.Kwh} Kw/h";
+                TempData["Mensagem"] = $"Digite um valor maior que o último registrado!";
                 return RedirectToAction(nameof(Index));
             }
+            var leitura = new LeituraDoRelogio(kwh);
+            medidor.RegistrarConsumo(kwh);
+            db.Add(leitura);
+            db.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
     }
