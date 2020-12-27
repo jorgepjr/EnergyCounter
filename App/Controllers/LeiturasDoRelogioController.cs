@@ -61,7 +61,6 @@ namespace App.Controllers
             }
             db.Remove(leitura);
             db.SaveChanges();
-            medidor.ZerarUltimoConsumo();
             return RedirectToAction(nameof(Index));
         }
     }
