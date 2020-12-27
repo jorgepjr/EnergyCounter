@@ -15,6 +15,7 @@
                     <th>Data</th>
                     <th>Kw /h</th>
                     <th>Consumo</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,6 +25,17 @@
                         <td>@item.Registro.ToString("dd/MM/yyyy")</td>
                         <td>@item.Kwh</td>
                         <td>@item.Consumo</td>
+                        <td>
+                            @if (item.Registro.Date == DateTime.Now.Date)
+                            {
+                                <button class="btn btn-link" onclick="confirmarAcao(@item.Id)"><em class="far fa-trash-alt"></em></button>
+                            }
+                            else
+                            {
+                                <span>---</span>
+                            }
+
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -36,3 +48,7 @@
         </div>
     }
 </div>
+
+@section Scripts{
+    <script src="~/js/excluir.js" asp-append-version="true"></script>
+}

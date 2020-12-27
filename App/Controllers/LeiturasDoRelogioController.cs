@@ -49,5 +49,19 @@ namespace App.Controllers
             db.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        public IActionResult Excluir(int id)
+        {
+            var leitura = db.LeiturasDoRelogio.SingleOrDefault(x => x.Id == id);
+
+            if (leitura is null)
+            {
+                return NotFound();
+            }
+            db.Remove(leitura);
+            db.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
