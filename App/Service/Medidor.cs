@@ -55,6 +55,7 @@ namespace App.Service
             var leitura = db.LeiturasDoRelogio.LastOrDefault();
             if (leitura != null)
                 leitura.ZerarConsumo();
+                db.SaveChanges();
         }
     }
 }

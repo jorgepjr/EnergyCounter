@@ -60,8 +60,8 @@ namespace App.Controllers
                 return NotFound();
             }
             db.Remove(leitura);
-            medidor.ZerarUltimoConsumo();
             db.SaveChanges();
+            medidor.ZerarUltimoConsumo();
             return RedirectToAction(nameof(Index));
         }
     }
