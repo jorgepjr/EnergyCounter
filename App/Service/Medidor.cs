@@ -52,7 +52,7 @@ namespace App.Service
         }
         public void ZerarUltimoConsumo()
         {
-            var leitura = db.LeiturasDoRelogio.Last();
+            var leitura = db.LeiturasDoRelogio.LastOrDefault();
             if (leitura != null)
                 leitura.ZerarConsumo();
         }
