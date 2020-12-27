@@ -50,5 +50,11 @@ namespace App.Service
                 return ultimaLeitura.Registro.Date == DateTime.Now.Date;
             return false;
         }
+        public void ZerarUltimoConsumo()
+        {
+            var leitura = db.LeiturasDoRelogio.Last();
+            if (leitura != null)
+                leitura.ZerarConsumo();
+        }
     }
 }

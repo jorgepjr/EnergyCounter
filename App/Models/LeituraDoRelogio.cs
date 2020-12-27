@@ -21,5 +21,10 @@ namespace App.Models
         {
             this.Consumo = novaLeitura - ultimaLeitura;
         }
+
+        public void ZerarConsumo()
+        {
+            this.Consumo = 0;
+        }
     }
 }
