@@ -22,9 +22,13 @@ namespace App.Models
             this.Consumo = novaLeitura - ultimaLeitura;
         }
 
-        public void ZerarConsumo()
+        public void ZerarConsumoDoDia()
         {
             this.Consumo = 0;
+        }
+        public void EditarDataDeRegistro(DateTime registro)
+        {
+            this.Registro = registro;
         }
     }
 }

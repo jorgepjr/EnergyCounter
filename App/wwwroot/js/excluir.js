@@ -1,8 +1,17 @@
 var RequestVerificationToken = document.querySelector("[name='__RequestVerificationToken']").value
 var botoesExcluir = document.querySelectorAll('.btn-link')
 
-cancelReload()
-function confirmarAcao(id) {
+cancelRefrach()
+
+function cancelRefrach(){
+    botoesExcluir.forEach(function(botao){
+        botao.addEventListener('click',(e)=>{
+         e.preventDefault()
+        })
+    })
+ }
+
+function confirmarExclusao(id) {
     Swal.fire({
         title: 'Deseja excluir ?',
         icon: 'warning',
@@ -19,15 +28,8 @@ function confirmarAcao(id) {
     })
 }
 
-function cancelReload(){
-    botoesExcluir.forEach(function(botao){
-        botao.addEventListener('click',(e)=>{
-         e.preventDefault()
-        })
-    })
- }
-
 function excluir(id) {
+    debugger
     console.log(id)
     $.ajax({
         type: "POST",

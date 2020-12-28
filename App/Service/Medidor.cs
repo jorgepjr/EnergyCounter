@@ -29,7 +29,7 @@ namespace App.Service
         public bool UltimoValorEhMaior(int kwh)
         {
             var leituras = db.LeiturasDoRelogio.ToList();
-            if (!leituras.Any())
+            if (leituras.Any())
             {
                 return true;
             }
@@ -45,17 +45,30 @@ namespace App.Service
         }
         public bool LeituraDoDiaRealizada()
         {
+            var hoje = DateTime.Now.Date;
             var ultimaLeitura = db.LeiturasDoRelogio.OrderBy(x => x.Registro).LastOrDefault();
             if (ultimaLeitura != null)
-                return ultimaLeitura.Registro.Date == DateTime.Now.Date;
+                return ultimaLeitura.Registro.Date == hoje;
             return false;
         }
-        public void ZerarUltimoConsumo()
+        public void ZerarUltimoConsumoDoDia()
         {
-            var leitura = db.LeiturasDoRelogio.LastOrDefault();
+            var leitura = db.LeiturasDoRelogio.OrderBy(x => x.Registro).LastOrDefault();
             if (leitura != null)
-                leitura.ZerarConsumo();
-                db.SaveChanges();
+                leitura.ZerarConsumoDoDia();
+            db.SaveChanges();
+        }
+
+        public int ConsumoMensal()
+        {
+            int total = 0;
+            var leituras = db.LeiturasDoRelogio.ToList();
+
+            foreach (var leitura in leituras)
+            {
+                total += leitura.Consumo;
+            }
+            return total;
         }
     }
 }

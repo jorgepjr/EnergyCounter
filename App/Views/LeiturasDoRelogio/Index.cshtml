@@ -6,6 +6,7 @@
     <form asp-action="Registrar">
         <partial name="_FormLeitura.cshtml" />
     </form>
+
     @if (Model.Any())
     {
 
@@ -14,7 +15,7 @@
                 <tr>
                     <th>Data</th>
                     <th>Kw /h</th>
-                    <th>Consumo</th>
+                    <th class="text-center">Consumo diário</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -24,11 +25,11 @@
                     <tr>
                         <td>@item.Registro.ToString("dd/MM/yyyy")</td>
                         <td>@item.Kwh</td>
-                        <td>@item.Consumo</td>
+                        <td class="text-center">@item.Consumo</td>
                         <td>
                             @if (item.Registro.Date == DateTime.Now.Date)
                             {
-                                <button class="btn btn-link" onclick="confirmarAcao(@item.Id)"><em class="far fa-trash-alt"></em></button>
+                                <button class="btn btn-link" onclick="confirmarExclusao(@item.Id)"><em class="far fa-trash-alt"></em></button>
                             }
                             else
                             {
@@ -47,6 +48,7 @@
             <h3>Nenhum cadastro existente!</h3>
         </div>
     }
+    <strong class="total">Consumo total: @ViewData["ConsumoMensal"] Kh /h</strong>
 </div>
 
 @section Scripts{

@@ -19,6 +19,7 @@ namespace App.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            ViewData["ConsumoMensal"] = medidor.ConsumoMensal();
             var leituras = await db.LeiturasDoRelogio
             .Where(x => x.Registro.Month == DateTime.Now.Month).OrderBy(x => x.Registro).ToListAsync();
             return View(leituras);
@@ -60,6 +61,7 @@ namespace App.Controllers
                 return NotFound();
             }
             db.Remove(leitura);
+            medidor.ZerarUltimoConsumoDoDia();
             db.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
