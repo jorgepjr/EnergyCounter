@@ -30,19 +30,17 @@ namespace App.Service
         {
             var leituras = db.LeiturasDoRelogio.ToList();
             if (leituras.Any())
-            {
-                return true;
-            }
 
-            foreach (var item in leituras)
-            {
-                if (item.Kwh > kwh)
+                foreach (var item in leituras)
                 {
-                    return true;
+                    if (item.Kwh > kwh)
+                    {
+                        return true;
+                    }
                 }
-            }
             return false;
         }
+
         public bool LeituraDoDiaRealizada()
         {
             var hoje = DateTime.Now.Date;
@@ -53,10 +51,9 @@ namespace App.Service
         }
         public void ZerarUltimoConsumoDoDia()
         {
-            var leitura = db.LeiturasDoRelogio.OrderBy(x => x.Registro).LastOrDefault();
+            var leitura = db.LeiturasDoRelogio.SingleOrDefault(x=>x.Registro.Date == DateTime.Now.Date.AddDays(-1));
             if (leitura != null)
                 leitura.ZerarConsumoDoDia();
-            db.SaveChanges();
         }
 
         public int ConsumoMensal()
