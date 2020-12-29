@@ -1,5 +1,4 @@
 ﻿using System;
-using App.Service;
 
 namespace App.Models
 {
@@ -22,7 +21,7 @@ namespace App.Models
             this.Consumo = novaLeitura - ultimaLeitura;
         }
 
-        public void ZerarConsumoDoDia()
+        public void ZerarConsumo()
         {
             this.Consumo = 0;
         }

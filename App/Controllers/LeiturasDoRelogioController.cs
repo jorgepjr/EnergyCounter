@@ -33,13 +33,13 @@ namespace App.Controllers
                 TempData["Mensagem"] = "*valor inválido ";
                 return RedirectToAction(nameof(Index));
             }
-            if (medidor.LeituraDoDiaRealizada())
+            if (medidor.LeituraDoDiaJaRealizada())
             {
                 TempData["Mensagem"] = $"O registro de hoje já foi realizado!";
                 return RedirectToAction(nameof(Index));
             }
 
-            if (medidor.UltimoValorEhMaior(kwh))
+            if (medidor.ValorEhMenorDoQueOsQueJaForamRegistrados(kwh))
             {
                 TempData["Mensagem"] = $"Digite um valor maior que o último registrado!";
                 return RedirectToAction(nameof(Index));
@@ -61,7 +61,7 @@ namespace App.Controllers
                 return NotFound();
             }
             db.Remove(leitura);
-            medidor.ZerarUltimoConsumoDoDia();
+            medidor.ZerarConsumoDoDiaAnterior();
             db.SaveChanges();
             return RedirectToAction(nameof(Index));
         }

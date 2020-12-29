@@ -26,14 +26,14 @@ namespace App.Service
             }
         }
 
-        public bool UltimoValorEhMaior(int kwh)
+        public bool ValorEhMenorDoQueOsQueJaForamRegistrados(int kwh)
         {
             var leituras = db.LeiturasDoRelogio.ToList();
             if (leituras.Any())
 
                 foreach (var item in leituras)
                 {
-                    if (item.Kwh > kwh)
+                    if (kwh < item.Kwh)
                     {
                         return true;
                     }
@@ -41,19 +41,18 @@ namespace App.Service
             return false;
         }
 
-        public bool LeituraDoDiaRealizada()
+        public bool LeituraDoDiaJaRealizada()
         {
             var hoje = DateTime.Now.Date;
-            var ultimaLeitura = db.LeiturasDoRelogio.OrderBy(x => x.Registro).LastOrDefault();
-            if (ultimaLeitura != null)
-                return ultimaLeitura.Registro.Date == hoje;
-            return false;
+            var leitura = db.LeiturasDoRelogio.FirstOrDefault(x => x.Registro.Date == hoje);
+            return leitura != null;
         }
-        public void ZerarUltimoConsumoDoDia()
+        public void ZerarConsumoDoDiaAnterior()
         {
-            var leitura = db.LeiturasDoRelogio.SingleOrDefault(x=>x.Registro.Date == DateTime.Now.Date.AddDays(-1));
+            var diaAnterior = DateTime.Now.Date.AddDays(-1);
+            var leitura = db.LeiturasDoRelogio.SingleOrDefault(x => x.Registro.Date == diaAnterior);
             if (leitura != null)
-                leitura.ZerarConsumoDoDia();
+                leitura.ZerarConsumo();
         }
 
         public int ConsumoMensal()
