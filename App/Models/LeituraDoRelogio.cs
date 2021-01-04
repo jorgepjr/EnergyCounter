@@ -11,7 +11,7 @@ namespace App.Models
             RegistrarData(registro);
         }
         public int Id { get; private set; }
-        public int Kwh { get; set; }
+        public int Kwh { get; private set; }
         public DateTime? Registro { get; private set; }
         public int Consumo { get; private set; }
         public void CalcularConsumo(int ultimaLeitura, int novaLeitura)

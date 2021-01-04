@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using App.Models;
 using App.Service;
+using EnergyCounter.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +26,7 @@ namespace App.Controllers
             return View(leituras);
         }
         [HttpPost]
-        public IActionResult Registrar(int kwh)
+        public async Task<IActionResult> Registrar(int kwh)
         {
             if (kwh <= 0)
             {
@@ -44,10 +45,10 @@ namespace App.Controllers
                 return RedirectToAction(nameof(Index));
             }
             var leitura = new LeituraDoRelogio(kwh);
-            medidor.RegistrarConsumo(kwh);
             db.Add(leitura);
+            await medidor.RegistrarConsumo(leitura.Kwh);
             db.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         [HttpPost]

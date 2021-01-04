@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace App.Service
 {
@@ -12,17 +14,17 @@ namespace App.Service
             this.db = db;
         }
         //TODO: Testar
-        public void RegistrarConsumo(int kwh)
+        public async Task RegistrarConsumo(int kwh)
         {
             int novaLeitura = kwh;
 
-            var ultimaLeitura = db.LeiturasDoRelogio.OrderBy(x => x.Kwh).LastOrDefault();
+            var ultimaLeitura = await db.LeiturasDoRelogio.OrderBy(x => x.Kwh).LastOrDefaultAsync();
 
             if (ultimaLeitura != null)
             {
                 if (ultimaLeitura.Kwh < novaLeitura || ultimaLeitura != null)
                 {
-                    ultimaLeitura.CalcularConsumo(ultimaLeitura.Kwh, novaLeitura);
+                     ultimaLeitura.CalcularConsumo(ultimaLeitura.Kwh, novaLeitura);
                 }
             }
         }
@@ -52,7 +54,7 @@ namespace App.Service
         public void ZerarConsumoDoDiaAnterior()
         {
             var hoje = DateTime.Now;
-            var leitura = db.LeiturasDoRelogio.SingleOrDefault(x => x.Registro.Value.Date < hoje.Date);
+            var leitura = db.LeiturasDoRelogio.SingleOrDefault(x => x.Registro.Value.Date.Day < hoje.Date.Day);
             if (leitura != null)
                 leitura.ZerarConsumo();
         }
@@ -60,7 +62,7 @@ namespace App.Service
         public int ConsumoMensal()
         {
             int total = 0;
-            var leituras = db.LeiturasDoRelogio.ToList();
+            var leituras = db.LeiturasDoRelogio.Where(x => x.Registro.Value.Date == DateTime.Now.Date).ToList();
 
             foreach (var leitura in leituras)
             {
