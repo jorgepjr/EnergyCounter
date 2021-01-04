@@ -11,6 +11,7 @@ namespace App.Service
         {
             this.db = db;
         }
+        //TODO: Testar
         public void RegistrarConsumo(int kwh)
         {
             int novaLeitura = kwh;
@@ -25,7 +26,7 @@ namespace App.Service
                 }
             }
         }
-
+        //TODO: Testar
         public bool ValorEhMenorDoQueOsQueJaForamRegistrados(int kwh)
         {
             var leituras = db.LeiturasDoRelogio.ToList();
@@ -40,21 +41,22 @@ namespace App.Service
                 }
             return false;
         }
-
+        //TODO: Testar
         public bool LeituraDoDiaJaRealizada()
         {
             var hoje = DateTime.Now.Date;
-            var leitura = db.LeiturasDoRelogio.FirstOrDefault(x => x.Registro.Date == hoje);
+            var leitura = db.LeiturasDoRelogio.FirstOrDefault(x => x.Registro.Value.Date == hoje);
             return leitura != null;
         }
+        //TODO: Testar
         public void ZerarConsumoDoDiaAnterior()
         {
-            var diaAnterior = DateTime.Now.Date.AddDays(-1);
-            var leitura = db.LeiturasDoRelogio.SingleOrDefault(x => x.Registro.Date == diaAnterior);
+            var hoje = DateTime.Now;
+            var leitura = db.LeiturasDoRelogio.SingleOrDefault(x => x.Registro.Value.Date < hoje.Date);
             if (leitura != null)
                 leitura.ZerarConsumo();
         }
-
+        //TODO: Testar
         public int ConsumoMensal()
         {
             int total = 0;

@@ -24,12 +24,12 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.Registro.ToString("dd/MM/yyyy")</td>
-                        <td>@item.Registro.ToString("HH:mm")</td>
+                        <td>@item.Registro.Value.ToString("dd/MM/yyyy")</td>
+                        <td>@item.Registro.Value.ToString("HH:mm")</td>
                         <td>@item.Kwh</td>
                         <td class="text-center">@item.Consumo</td>
                         <td>
-                            @if (item.Registro.Date == DateTime.Now.Date)
+                            @if (item.Registro.Value.Date == DateTime.Now.Date)
                             {
                                 <button class="btn btn-link" onclick="confirmarExclusao(@item.Id)"><em class="far fa-trash-alt"></em></button>
                             }

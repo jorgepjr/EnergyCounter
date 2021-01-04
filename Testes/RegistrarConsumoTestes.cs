@@ -1,10 +1,10 @@
+using App;
 using Xunit;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using App.Models;
 using App.Service;
-using App;
 
 namespace Testes
 {
@@ -40,7 +40,7 @@ namespace Testes
             var novaLeitura = new LeituraDoRelogio(360);
 
             //Then
-            Assert.True(ultimaLeitura.Registro < novaLeitura.Registro);
+            Assert.True(ultimaLeitura.Registro.Value.Date.AddDays(-1) < novaLeitura.Registro.Value.Date);
         }
         public static List<LeituraDoRelogio> LeiturasDoRelogio()
         {

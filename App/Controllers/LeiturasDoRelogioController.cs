@@ -21,10 +21,9 @@ namespace App.Controllers
         {
             ViewData["ConsumoMensal"] = medidor.ConsumoMensal();
             var leituras = await db.LeiturasDoRelogio
-            .Where(x => x.Registro.Month == DateTime.Now.Month).OrderBy(x => x.Registro).ToListAsync();
+            .Where(x => x.Registro.Value.Month == DateTime.Now.Month).OrderBy(x => x.Registro).ToListAsync();
             return View(leituras);
         }
-
         [HttpPost]
         public IActionResult Registrar(int kwh)
         {

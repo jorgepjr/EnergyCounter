@@ -1,16 +1,28 @@
-﻿using App.Models;
+﻿using App;
+using App.Models;
+using System.Linq;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using App.Service;
 
 namespace EnergyCounter.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly Contexto db;
+        private readonly Medidor medidor;
+
+        public HomeController(Contexto db, Medidor medidor)
+        {
+            this.db = db;
+            this.medidor = medidor;
+        }
         public IActionResult Index()
         {
-            return View();
+            ViewData["ConsumoMensal"] = medidor.ConsumoMensal();
+            var ultimaLeitura = db.LeiturasDoRelogio.OrderBy(x=>x.Registro.Value.Date).Last();
+            return View(ultimaLeitura);
         }
-
         public IActionResult Privacy()
         {
             return View();
